@@ -1,0 +1,96 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="ACSLA-712 create users table" author="alexander.yanakiev">
+        <createTable tableName="virava_users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="PK_VIRAVA_USER" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(100)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uq_virava_users_username"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="ACSLA-713 create users data table" author="alexander.yanakiev">
+        <createTable tableName="virava_users_data">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="PK_VIRAVA_USERS_DATA" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_virava_users_data" references="virava_users(id)"/>
+            </column>
+            <column name="data_key" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_value" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="ACSLA-713 add constraint for user_id_data_key" author="alexander.yanakiev">
+        <addUniqueConstraint tableName="virava_users_data" columnNames="user_id,data_key"
+                             constraintName="uq_virava_users_data_user_id_data_key"/>
+    </changeSet>
+    <changeSet id="ACSLA-712 create permissions table" author="alexander.yanakiev">
+        <createTable tableName="virava_permissions">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="PK_VIRAVA_PERMISSION" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uq_virava_permissions_name"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="ACSLA-712 create user_permissions table" author="alexander.yanakiev">
+        <createTable tableName="virava_user_permissions">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="PK_VIRAVA_USER_PERMISSIONS" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_virava_user_permissions_user_id"
+                             references="virava_users(id)"/>
+            </column>
+            <column name="permission_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_virava_user_permissions_permission_id"
+                             references="virava_permissions(id)"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="virava_user_permissions" columnNames="user_id, permission_id"
+                             constraintName="uq_virava_user_permissions_user_id_permission_id"/>
+    </changeSet>
+    <changeSet id="ACSLA-713 create resources table" author="alexander.yanakiev">
+        <createTable tableName="virava_resources">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VIRAVA_RESOURCES"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uq_virava_resources_name"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="ACSLA-713 create resource_permissions table" author="alexander.yanakiev">
+        <createTable tableName="virava_resource_permissions">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="PK_VIRAVA_RESOURCE_PERMISSIONS" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_virava_resource_permissions_user_id"
+                             references="virava_users(id)"/>
+            </column>
+            <column name="resource_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_virava_resource_permissions_resource_id"
+                             references="virava_resources(id)"/>
+            </column>
+            <column name="all_ids" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ids" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="ACSLA-713 adding constraints to resource_permission table" author="alexander.yanakiev">
+        <addUniqueConstraint tableName="virava_resource_permissions" columnNames="user_id, resource_id"
+                             constraintName="uq_virava_resource_permissions_user_id_resource_id"/>
+    </changeSet>
+</databaseChangeLog>
