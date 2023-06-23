@@ -6,6 +6,8 @@ import jakarta.persistence.Converter;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import static com.cleverpine.viravamanageaccessdb.util.ViravaConstants.DELIMETER;
+
 @Converter
 public class ResourcePermissionIdConverter implements AttributeConverter<String[], String> {
     @Override
@@ -14,7 +16,7 @@ public class ResourcePermissionIdConverter implements AttributeConverter<String[
             return null;
         }
 
-        return String.join(",", ids);
+        return String.join(DELIMETER, ids);
     }
 
     @Override
@@ -23,6 +25,6 @@ public class ResourcePermissionIdConverter implements AttributeConverter<String[
             return null;
         }
 
-        return idString.split(",");
+        return idString.split(DELIMETER);
     }
 }

@@ -21,7 +21,7 @@ public class ViravaPermissionEntity {
     private Long id;
     @Column(name = "name")
     private String name;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "virava_user_permissions",
             joinColumns = @JoinColumn(name = "permission_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))

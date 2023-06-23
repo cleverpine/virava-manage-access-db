@@ -19,7 +19,6 @@ import static com.cleverpine.viravamanageaccessdb.util.ViravaConstants.DELIMETER
 @Mapper(componentModel = "spring")
 public interface ViravaUserMapper extends ViravaResourcePermissionMapper {
 
-    @Mapping(target = ".", source = ".", qualifiedByName = "mapResourcesInData")
     User viravaUserEntityToUser(ViravaUserEntity viravaUserEntity);
 
     List<User> viravaUserEntityListToUserList(List<ViravaUserEntity> viravaUserEntityList);
@@ -39,32 +38,27 @@ public interface ViravaUserMapper extends ViravaResourcePermissionMapper {
     })
     void userToViravaUserEntity(User user, @MappingTarget ViravaUserEntity viravaUserEntity);
 
-
     @AfterMapping
     default void mapResourcesInData(@MappingTarget User user, ViravaUserEntity viravaUserEntity) {
         var resourcePermissionEntityList = viravaUserEntity.getResourcePermissions();
         var permissionEntityList = viravaUserEntity.getPermissions();
-
         if (resourcePermissionEntityList != null) {
             resourcePermissionEntityList
-                            .forEach(resourcePermissionEntity -> {
-                                var resourceName = resourcePermissionEntity.getResource().getName();
-
-                                if (resourcePermissionEntity.isAll()) {
-                                    user.addData(resourceName, ALL);
-                                    return;
-                                }
-
-                                var permissions = Arrays.stream(resourcePermissionEntity.getIds())
-                                        .map(String::valueOf)
-                                        .collect(Collectors.joining(DELIMETER));
-
-                                user.addData(resourceName, permissions);
-                            });
+                    .forEach(resourcePermissionEntity -> {
+                        var resourceName = resourcePermissionEntity.getResource().getName();
+                        if (resourcePermissionEntity.isAll()) {
+                            user.addData(resourceName, ALL);
+                            return;
+                        }
+                        var permissions = Arrays.stream(resourcePermissionEntity.getIds())
+                                .map(String::valueOf)
+                                .collect(Collectors.joining(DELIMETER));
+                        user.addData(resourceName, permissions);
+                    });
         }
-
         if (permissionEntityList != null) {
-            var permissionsString = permissionEntityList.stream().map(ViravaPermissionEntity::getName).collect(Collectors.joining(DELIMETER));
+            var permissionsString =
+                    permissionEntityList.stream().map(ViravaPermissionEntity::getName).collect(Collectors.joining(DELIMETER));
             user.addData("permissions", permissionsString);
         }
     }
