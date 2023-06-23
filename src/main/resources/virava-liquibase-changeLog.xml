@@ -93,4 +93,7 @@
         <addUniqueConstraint tableName="virava_resource_permissions" columnNames="user_id, resource_id"
                              constraintName="uq_virava_resource_permissions_user_id_resource_id"/>
     </changeSet>
+    <changeSet id="ACSLA-713 virava_users_data data_value type change" author="radoslav.rashev">
+        <modifyDataType tableName="virava_users_data" columnName="data_value" newDataType="text"/>
+    </changeSet>
 </databaseChangeLog>
