@@ -17,7 +17,7 @@
 		<java.version>17</java.version>
 
 		<liquibase-core.version>4.22.0</liquibase-core.version>
-		<virava-manage-access-core.version>0.0.2</virava-manage-access-core.version>
+		<virava-manage-access-core.version>0.0.3</virava-manage-access-core.version>
 		<lombok.version>1.18.28</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 

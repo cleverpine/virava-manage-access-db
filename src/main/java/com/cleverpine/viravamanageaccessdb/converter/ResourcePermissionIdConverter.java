@@ -12,7 +12,7 @@ import static com.cleverpine.viravamanageaccessdb.util.ViravaConstants.DELIMETER
 public class ResourcePermissionIdConverter implements AttributeConverter<String[], String> {
     @Override
     public String convertToDatabaseColumn(String[] ids) {
-        if (ids == null) {
+        if (ids == null || ids.length == 0) {
             return null;
         }
 
@@ -21,7 +21,7 @@ public class ResourcePermissionIdConverter implements AttributeConverter<String[
 
     @Override
     public String[] convertToEntityAttribute(String idString) {
-        if (idString == null) {
+        if (idString == null || idString.isBlank()) {
             return null;
         }
 

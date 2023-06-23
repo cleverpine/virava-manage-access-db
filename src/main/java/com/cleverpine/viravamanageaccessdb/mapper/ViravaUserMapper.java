@@ -37,29 +37,4 @@ public interface ViravaUserMapper extends ViravaResourcePermissionMapper {
             @Mapping(target = "resourcePermissions", ignore = true)
     })
     void userToViravaUserEntity(User user, @MappingTarget ViravaUserEntity viravaUserEntity);
-
-    @AfterMapping
-    default void mapResourcesInData(@MappingTarget User user, ViravaUserEntity viravaUserEntity) {
-        var resourcePermissionEntityList = viravaUserEntity.getResourcePermissions();
-        var permissionEntityList = viravaUserEntity.getPermissions();
-        if (resourcePermissionEntityList != null) {
-            resourcePermissionEntityList
-                    .forEach(resourcePermissionEntity -> {
-                        var resourceName = resourcePermissionEntity.getResource().getName();
-                        if (resourcePermissionEntity.isAll()) {
-                            user.addData(resourceName, ALL);
-                            return;
-                        }
-                        var permissions = Arrays.stream(resourcePermissionEntity.getIds())
-                                .map(String::valueOf)
-                                .collect(Collectors.joining(DELIMETER));
-                        user.addData(resourceName, permissions);
-                    });
-        }
-        if (permissionEntityList != null) {
-            var permissionsString =
-                    permissionEntityList.stream().map(ViravaPermissionEntity::getName).collect(Collectors.joining(DELIMETER));
-            user.addData("permissions", permissionsString);
-        }
-    }
 }
