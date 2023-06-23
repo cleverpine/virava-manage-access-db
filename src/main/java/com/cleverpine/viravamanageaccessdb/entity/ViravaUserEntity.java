@@ -20,17 +20,17 @@ public class ViravaUserEntity {
     private Long id;
     @Column(name = "username")
     private String username;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @MapKeyColumn(name = "data_key")
     @Column(name = "data_value")
     @CollectionTable(name = "virava_users_data", joinColumns = @JoinColumn(name = "user_id"))
     private Map<String, String> data = new HashMap<>();
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "virava_user_permissions",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private Set<ViravaPermissionEntity> permissions;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<ViravaResourcePermissionEntity> resourcePermissions;
 
 
