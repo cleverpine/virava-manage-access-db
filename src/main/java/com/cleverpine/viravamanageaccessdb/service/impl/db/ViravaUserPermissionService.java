@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -79,6 +80,28 @@ public class ViravaUserPermissionService implements AMUserPermissionService {
     @Override
     public void deletePermissionsByUserId(long userId) {
         viravaUserPermissionRepository.deleteAllByUserId(userId);
+    }
+
+    @Override
+    public void deletePermissionByResourceAndId(String resourceName, long resourceId) {
+        var resources = createResourceMap();
+        var resource = getResourceByName(resourceName, resources);
+        var idAsString = String.valueOf(resourceId);
+        var resourcePermissions = viravaResourcePermissionRepository.findAllByResourceIdAndId(resource.getId(), idAsString);
+
+        if (resourcePermissions.isEmpty()) {
+            return;
+        }
+
+        resourcePermissions.forEach(resourcePermissionEntity -> {
+            var filteredIds = Arrays.stream(resourcePermissionEntity.getIds())
+                    .filter(resourcePermissionId -> !Objects.equals(resourcePermissionId, idAsString))
+                    .toArray(String[]::new);
+
+            resourcePermissionEntity.setIds(filteredIds);
+        });
+
+        viravaResourcePermissionRepository.saveAll(resourcePermissions);
     }
 
     private ViravaUserPermissionEntity createViravaUserPermissionEntity(long userId, long permissionId) {
