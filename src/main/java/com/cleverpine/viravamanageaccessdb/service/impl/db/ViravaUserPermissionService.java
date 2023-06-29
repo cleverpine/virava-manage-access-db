@@ -83,7 +83,7 @@ public class ViravaUserPermissionService implements AMUserPermissionService {
     }
 
     @Override
-    public void deletePermissionByResourceAndId(String resourceName, long resourceId) {
+    public void deletePermissionByResourceNameAndResourceId(String resourceName, long resourceId) {
         var resources = createResourceMap();
         var resource = getResourceByName(resourceName, resources);
         var idAsString = String.valueOf(resourceId);
