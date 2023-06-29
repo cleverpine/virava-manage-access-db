@@ -17,4 +17,10 @@ public interface ViravaResourcePermissionRepository extends CrudRepository<Virav
     void deleteAllByUserId(@Param("userId") long userId);
 
     List<ViravaResourcePermissionEntity> findAllByUserId(long userId);
+
+    @Query(value = "select * from virava_resource_permissions " +
+            "where resource_id = :resourceId " +
+            "and ids like concat('%', :ids, '%')", nativeQuery = true)
+    List<ViravaResourcePermissionEntity> findAllByResourceIdAndId(@Param("resourceId") long resourceId, @Param("ids") String ids);
+
 }
