@@ -20,7 +20,7 @@ public interface ViravaResourcePermissionRepository extends CrudRepository<Virav
 
     @Query(value = "select * from virava_resource_permissions " +
             "where resource_id = :resourceId " +
-            "and ids like concat('%', :ids, '%')", nativeQuery = true)
-    List<ViravaResourcePermissionEntity> findAllByResourceIdAndId(@Param("resourceId") long resourceId, @Param("ids") String ids);
+            "and ids like concat('%', :id, '%')", nativeQuery = true)
+    List<ViravaResourcePermissionEntity> findAllByResourceIdAndId(@Param("resourceId") long resourceId, @Param("id") String id);
 
 }
