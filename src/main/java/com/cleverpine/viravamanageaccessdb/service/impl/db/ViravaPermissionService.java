@@ -1,6 +1,7 @@
 package com.cleverpine.viravamanageaccessdb.service.impl.db;
 
 import com.cleverpine.viravabackendcommon.dto.Permission;
+import com.cleverpine.viravamanageaccessdb.entity.ViravaPermissionEntity;
 import com.cleverpine.viravamanageaccessdb.mapper.ViravaPermissionMapper;
 import com.cleverpine.viravamanageaccessdb.repository.ViravaPermissionRepository;
 import com.cleverpine.viravamanageacesscore.service.contract.permission.AMPermissionService;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.cleverpine.viravamanageaccessdb.util.ViravaConstants.*;
 
@@ -32,6 +34,15 @@ public class ViravaPermissionService implements AMPermissionService {
         var savedPermissionEntity = viravaPermissionRepository.save(viravaPermissionEntity);
 
         return viravaPermissionMapper.viravaPermissionEntityToPermission(savedPermissionEntity);
+    }
+
+    @Override
+    public Permission get(long id) {
+        var permissionOptional = viravaPermissionRepository.findById(id);
+        if (permissionOptional.isEmpty()) {
+            throw new EntityNotFoundException(String.format(PERMISSION_NOT_FOUND_ERROR, id));
+        }
+        return viravaPermissionMapper.viravaPermissionEntityToPermission(permissionOptional.get());
     }
 
     @Override
