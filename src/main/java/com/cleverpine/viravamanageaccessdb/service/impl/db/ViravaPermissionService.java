@@ -1,6 +1,7 @@
 package com.cleverpine.viravamanageaccessdb.service.impl.db;
 
 import com.cleverpine.viravabackendcommon.dto.Permission;
+import com.cleverpine.viravamanageaccessdb.entity.ViravaPermissionEntity;
 import com.cleverpine.viravamanageaccessdb.mapper.ViravaPermissionMapper;
 import com.cleverpine.viravamanageaccessdb.repository.ViravaPermissionRepository;
 import com.cleverpine.viravamanageacesscore.service.contract.permission.AMPermissionService;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.cleverpine.viravamanageaccessdb.util.ViravaConstants.*;
 
@@ -35,6 +37,18 @@ public class ViravaPermissionService implements AMPermissionService {
     }
 
     @Override
+    public Permission get(long id) {
+        var permissionOptional = viravaPermissionRepository.findById(id);
+        return getPermission(permissionOptional, String.format(PERMISSION_NOT_FOUND_ERROR, id));
+    }
+
+    @Override
+    public Permission getByName(String name) {
+        var permissionOptional = viravaPermissionRepository.findByName(name);
+        return getPermission(permissionOptional, String.format(PERMISSION_NOT_FOUND_BY_NAME_ERROR, name));
+    }
+
+    @Override
     public boolean checkIfExist(long id) {
         return viravaPermissionRepository.existsById(id);
     }
@@ -53,5 +67,12 @@ public class ViravaPermissionService implements AMPermissionService {
 
     private boolean checkIfExistsByName(String name) {
         return viravaPermissionRepository.existsByName(name);
+    }
+
+    private Permission getPermission(Optional<ViravaPermissionEntity> permissionOptional, String permissionNotFoundErrorMessage) {
+        if (permissionOptional.isEmpty()) {
+            throw new EntityNotFoundException(permissionNotFoundErrorMessage);
+        }
+        return viravaPermissionMapper.viravaPermissionEntityToPermission(permissionOptional.get());
     }
 }
