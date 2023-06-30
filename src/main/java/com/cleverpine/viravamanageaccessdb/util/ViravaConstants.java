@@ -13,6 +13,7 @@ public final class ViravaConstants {
     public static final String USER_CANNOT_BE_NULL = "User cannot be null";
     public static final String PERMISSION_IS_NULL_ERROR = "Permission cannot be null";
     public static final String PERMISSION_NOT_FOUND_ERROR = "Permission with id %d not found";
+    public static final String PERMISSION_NOT_FOUND_BY_NAME_ERROR = "Permission with name %s not found";
     public static final String PERMISSION_NAME_CANNOT_BE_NULL_ERROR = "Permission name cannot be null or empty";
     public static final String USER_ALREADY_EXISTS_ERROR = "User with username [%s] already exists";
     public static final String RESOURCE_NOT_FOUND_ERROR = "Resource with id [%d] not found";

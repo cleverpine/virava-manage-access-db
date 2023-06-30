@@ -39,10 +39,13 @@ public class ViravaPermissionService implements AMPermissionService {
     @Override
     public Permission get(long id) {
         var permissionOptional = viravaPermissionRepository.findById(id);
-        if (permissionOptional.isEmpty()) {
-            throw new EntityNotFoundException(String.format(PERMISSION_NOT_FOUND_ERROR, id));
-        }
-        return viravaPermissionMapper.viravaPermissionEntityToPermission(permissionOptional.get());
+        return getPermission(permissionOptional, String.format(PERMISSION_NOT_FOUND_ERROR, id));
+    }
+
+    @Override
+    public Permission getByName(String name) {
+        var permissionOptional = viravaPermissionRepository.findByName(name);
+        return getPermission(permissionOptional, String.format(PERMISSION_NOT_FOUND_BY_NAME_ERROR, name));
     }
 
     @Override
@@ -64,5 +67,12 @@ public class ViravaPermissionService implements AMPermissionService {
 
     private boolean checkIfExistsByName(String name) {
         return viravaPermissionRepository.existsByName(name);
+    }
+
+    private Permission getPermission(Optional<ViravaPermissionEntity> permissionOptional, String permissionNotFoundErrorMessage) {
+        if (permissionOptional.isEmpty()) {
+            throw new EntityNotFoundException(permissionNotFoundErrorMessage);
+        }
+        return viravaPermissionMapper.viravaPermissionEntityToPermission(permissionOptional.get());
     }
 }
