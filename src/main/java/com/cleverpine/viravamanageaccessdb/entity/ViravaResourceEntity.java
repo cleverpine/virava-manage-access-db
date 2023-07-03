@@ -18,4 +18,6 @@ public class ViravaResourceEntity {
     private Long id;
     @Column(name = "name")
     private String name;
+    @Column(name = "display_name")
+    private String displayName;
 }

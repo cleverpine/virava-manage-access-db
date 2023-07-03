@@ -96,4 +96,9 @@
     <changeSet id="ACSLA-713 virava_users_data data_value type change" author="radoslav.rashev">
         <modifyDataType tableName="virava_users_data" columnName="data_value" newDataType="text"/>
     </changeSet>
+    <changeSet id="ACSLA-828 virava resource display name" author="radoslav.rashev">
+        <addColumn tableName="virava_resources">
+            <column name="display_name" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
