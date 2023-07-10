@@ -8,7 +8,7 @@
 	<version>${revision}</version>
 
 	<properties>
-		<revision>0.0.7</revision>
+		<revision>0.0.8</revision>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<java.version>17</java.version>
@@ -16,8 +16,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>17</java.version>
 
+		<virava-manage-access-core.version>0.0.9</virava-manage-access-core.version>
 		<liquibase-core.version>4.22.0</liquibase-core.version>
-		<virava-manage-access-core.version>0.0.8</virava-manage-access-core.version>
 		<lombok.version>1.18.28</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 
